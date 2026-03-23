@@ -113,6 +113,26 @@ PORTFOLIO = [
         "ticker":   "BABA",
         "keywords": ["Alibaba", "BABA"],
     },
+    {
+        "name":     "Uber",
+        "ticker":   "UBER",
+        "keywords": ["Uber"],
+    },
+    {
+        "name":     "Nutanix",
+        "ticker":   "NTNX",
+        "keywords": ["Nutanix"],
+    },
+    {
+        "name":     "Hon Hai Precision",
+        "ticker":   "2317.TW",
+        "keywords": ["Hon Hai", "Foxconn"],
+    },
+    {
+        "name":     "KCCA ETF",
+        "ticker":   "KCCA",
+        "keywords": ["KCCA", "California carbon", "carbon allowance"],
+    },
 ]
 
 # ── Macro News Sources & Keywords ──────────────────────────────────────────────
@@ -137,7 +157,7 @@ MACRO_KEYWORDS = [
 # ── International ticker routing ──────────────────────────────────────────────
 # Yahoo Finance RSS returns 0 results for KRX and Euronext tickers.
 # These will use Google News RSS (by company name) as their primary source.
-GOOGLE_NEWS_PRIMARY = {"005930.KS", "000660.KS", "UMG.AS"}
+GOOGLE_NEWS_PRIMARY = {"005930.KS", "000660.KS", "UMG.AS", "2317.TW"}
 
 # ── ANSI terminal colors (auto-disabled when stdout is piped) ──────────────────
 _IS_TTY     = sys.stdout.isatty()
