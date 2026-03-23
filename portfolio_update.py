@@ -579,20 +579,32 @@ def main():
 
     # 4. Generate report
     report_html = build_html_report(prices, news_by_ticker, macro_news)
-    filename    = f"portfolio_{datetime.now().strftime('%Y%m%d_%H%M')}.html"
+    stamp        = datetime.now().strftime("%Y%m%d_%H%M")
+    html_file    = f"portfolio_{stamp}.html"
+    pdf_file     = f"portfolio_{stamp}.pdf"
 
-    with open(filename, "w", encoding="utf-8") as f:
+    with open(html_file, "w", encoding="utf-8") as f:
         f.write(report_html)
+    print(f"\n  HTML saved → {html_file}")
+
+    # PDF export via weasyprint (pip install weasyprint)
+    try:
+        from weasyprint import HTML as WP_HTML
+        WP_HTML(filename=html_file).write_pdf(pdf_file)
+        print(f"  PDF saved  → {pdf_file}")
+    except ImportError:
+        print("  PDF skipped — run: pip install weasyprint")
+    except Exception as pdf_err:
+        print(f"  PDF error  — {pdf_err}")
 
     print(f"\n{'=' * 60}")
-    print(f"  Report saved → {filename}")
-    print(f"  Open it in a browser to read your daily briefing.")
+    print(f"  Done. Open {html_file} or {pdf_file} to read your briefing.")
     print(f"{'=' * 60}\n")
 
-    # Auto-open on Windows
+    # Auto-open HTML on Windows
     try:
         import subprocess
-        subprocess.Popen(["start", filename], shell=True)
+        subprocess.Popen(["start", html_file], shell=True)
     except Exception:
         pass
 
