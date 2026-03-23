@@ -521,6 +521,10 @@ def build_html_report(prices, news_by_ticker, macro_news):
 # ── Main ───────────────────────────────────────────────────────────────────────
 
 def main():
+    # Force UTF-8 on Windows consoles so currency symbols print correctly
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
     print("=" * 60)
     print("  Portfolio Daily Update")
     print(f"  {datetime.now().strftime('%A, %B %d, %Y  %H:%M')}")
@@ -587,13 +591,17 @@ def main():
         f.write(report_html)
     print(f"\n  HTML saved → {html_file}")
 
-    # PDF export via weasyprint (pip install weasyprint)
+    # PDF export via xhtml2pdf (pure Python, no external binaries needed)
     try:
-        from weasyprint import HTML as WP_HTML
-        WP_HTML(filename=html_file).write_pdf(pdf_file)
-        print(f"  PDF saved  → {pdf_file}")
+        from xhtml2pdf import pisa
+        with open(html_file, "rb") as src, open(pdf_file, "wb") as dst:
+            result = pisa.CreatePDF(src, dest=dst)
+        if result.err:
+            print(f"  PDF error  — xhtml2pdf reported errors")
+        else:
+            print(f"  PDF saved  → {pdf_file}")
     except ImportError:
-        print("  PDF skipped — run: pip install weasyprint")
+        print("  PDF skipped — run: python -m pip install xhtml2pdf")
     except Exception as pdf_err:
         print(f"  PDF error  — {pdf_err}")
 
